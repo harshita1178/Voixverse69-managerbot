@@ -28,7 +28,8 @@ from typing import Union
 
 from sqlalchemy import BigInteger, Boolean, Column, String, UnicodeText
 
-from Database.sql import BASE, SESSION
+# Yahan par 'BASE' aur 'SESSION' ke saath 'ENGINE' ko bhi import karna hai
+from Database.sql import BASE, SESSION, ENGINE # <-- Ye line change hui hai
 
 
 class ChatAccessConnectionSettings(BASE):
@@ -74,9 +75,10 @@ class ConnectionHistory(BASE):
         return "<ᴄᴏɴɴᴇᴄᴛɪᴏɴ ᴜsᴇʀ {} ʜɪsᴛᴏʀʏ {}>".format(self.user_id, self.chat_id)
 
 
-ChatAccessConnectionSettings.__table__.create(checkfirst=True)
-Connection.__table__.create(checkfirst=True)
-ConnectionHistory.__table__.create(checkfirst=True)
+# Har .create() call mein 'bind=ENGINE' add karna hai
+ChatAccessConnectionSettings.__table__.create(bind=ENGINE, checkfirst=True) # <-- Ye line change hui hai
+Connection.__table__.create(bind=ENGINE, checkfirst=True)                 # <-- Ye line change hui hai
+ConnectionHistory.__table__.create(bind=ENGINE, checkfirst=True)          # <-- Ye line change hui hai
 
 CHAT_ACCESS_LOCK = threading.RLock()
 CONNECTION_INSERTION_LOCK = threading.RLock()
