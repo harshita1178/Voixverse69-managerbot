@@ -26,7 +26,8 @@ import threading
 
 from sqlalchemy import BigInteger, Column, String
 
-from Database.sql import BASE, SESSION
+# BASE aur SESSION ke saath ENGINE ko bhi import karo
+from Database.sql import BASE, SESSION, ENGINE # <-- Ye line change hui hai
 
 
 class Approvals(BASE):
@@ -42,7 +43,8 @@ class Approvals(BASE):
         return "<ᴀᴘᴘʀᴏᴠᴇ %s>" % self.user_id
 
 
-Approvals.__table__.create(checkfirst=True)
+# Yahan 'bind=ENGINE' add kiya gaya hai
+Approvals.__table__.create(bind=ENGINE, checkfirst=True) # <-- Ye line change hui hai
 
 APPROVE_INSERTION_LOCK = threading.RLock()
 
