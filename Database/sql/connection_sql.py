@@ -28,8 +28,9 @@ from typing import Union
 
 from sqlalchemy import BigInteger, Boolean, Column, String, UnicodeText
 
-# Yahan par 'BASE' aur 'SESSION' ke saath 'ENGINE' ko bhi import karna hai
-from Database.sql import BASE, SESSION, ENGINE # <-- Ye line change hui hai
+# BASE, SESSION, aur ENGINE ko Database.sql se import kiya gaya hai
+# Ab ENGINE import ho payega kyunki __init__.py mein use global kiya gaya hai
+from Database.sql import BASE, SESSION, ENGINE 
 
 
 class ChatAccessConnectionSettings(BASE):
@@ -75,10 +76,11 @@ class ConnectionHistory(BASE):
         return "<ᴄᴏɴɴᴇᴄᴛɪᴏɴ ᴜsᴇʀ {} ʜɪsᴛᴏʀʏ {}>".format(self.user_id, self.chat_id)
 
 
-# Har .create() call mein 'bind=ENGINE' add karna hai
-ChatAccessConnectionSettings.__table__.create(bind=ENGINE, checkfirst=True) # <-- Ye line change hui hai
-Connection.__table__.create(bind=ENGINE, checkfirst=True)                 # <-- Ye line change hui hai
-ConnectionHistory.__table__.create(bind=ENGINE, checkfirst=True)          # <-- Ye line change hui hai
+# Har .create() call mein 'bind=ENGINE' add kiya gaya hai
+# Yeh Table.create() missing bind argument error ko fix karega
+ChatAccessConnectionSettings.__table__.create(bind=ENGINE, checkfirst=True)
+Connection.__table__.create(bind=ENGINE, checkfirst=True)
+ConnectionHistory.__table__.create(bind=ENGINE, checkfirst=True)
 
 CHAT_ACCESS_LOCK = threading.RLock()
 CONNECTION_INSERTION_LOCK = threading.RLock()
