@@ -34,7 +34,8 @@ from sqlalchemy import (
     func,
 )
 
-from Database.sql import BASE, SESSION
+# BASE aur SESSION ke saath ENGINE ko bhi import karo
+from Database.sql import BASE, SESSION, ENGINE # <-- Ye line change hui hai
 from Mikobot import dispatcher
 
 
@@ -93,9 +94,10 @@ class ChatMembers(BASE):
         )
 
 
-Users.__table__.create(checkfirst=True)
-Chats.__table__.create(checkfirst=True)
-ChatMembers.__table__.create(checkfirst=True)
+# Yahan 'bind=ENGINE' add kiya gaya hai
+Users.__table__.create(bind=ENGINE, checkfirst=True) # <-- Ye line change hui hai
+Chats.__table__.create(bind=ENGINE, checkfirst=True) # <-- Ye line change hui hai
+ChatMembers.__table__.create(bind=ENGINE, checkfirst=True) # <-- Ye line change hui hai
 
 INSERTION_LOCK = threading.RLock()
 
