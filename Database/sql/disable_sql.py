@@ -26,7 +26,8 @@ import threading
 
 from sqlalchemy import Column, String, UnicodeText, distinct, func
 
-from Database.sql import BASE, SESSION
+# BASE aur SESSION ke saath ENGINE ko bhi import karo
+from Database.sql import BASE, SESSION, ENGINE # <-- Ye line change hui hai
 
 
 class Disable(BASE):
@@ -42,7 +43,8 @@ class Disable(BASE):
         return "ᴅɪsᴀʙʟᴇᴅ ᴄᴍᴅ {} in {}".format(self.command, self.chat_id)
 
 
-Disable.__table__.create(checkfirst=True)
+# Yahan 'bind=ENGINE' add kiya gaya hai
+Disable.__table__.create(bind=ENGINE, checkfirst=True) # <-- Ye line change hui hai
 DISABLE_INSERTION_LOCK = threading.RLock()
 
 DISABLED = {}
