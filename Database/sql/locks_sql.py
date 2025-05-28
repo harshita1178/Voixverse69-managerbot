@@ -28,6 +28,7 @@ import threading
 from sqlalchemy import Boolean, Column, String
 
 from Database.sql import BASE, SESSION
+from Database.sql.base import ENGINE # <--- Yeh line add ki hai
 
 
 class Permissions(BASE):
@@ -99,9 +100,9 @@ class Restrictions(BASE):
 # For those who faced database error, Just uncomment the
 # line below and run bot for 1 time & remove that line!
 
-Permissions.__table__.create(checkfirst=True)
+Permissions.__table__.create(bind=ENGINE, checkfirst=True) # <--- Yahaan 'bind=ENGINE' add kiya hai
 # Permissions.__table__.drop()
-Restrictions.__table__.create(checkfirst=True)
+Restrictions.__table__.create(bind=ENGINE, checkfirst=True) # <--- Yahaan bhi 'bind=ENGINE' add kiya hai
 
 PERM_LOCK = threading.RLock()
 RESTR_LOCK = threading.RLock()
